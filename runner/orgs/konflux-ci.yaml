@@ -1,0 +1,7 @@
+org: konflux-ci
+
+exclude:
+  - .github
+  - .fullsend
+  - community-operators-prod   # 64k files, too large for agentready
+  - tests-common-packages      # empty repo, clone fails
