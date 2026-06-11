@@ -1,0 +1,846 @@
+{
+  "schema_version": "1.0.0",
+  "metadata": {
+    "agentready_version": "2.39.1",
+    "research_version": "2.0.1",
+    "assessment_timestamp": "2026-06-11T02:47:08.909633",
+    "assessment_timestamp_human": "June 11, 2026 at 2:47 AM",
+    "executed_by": "agentready@16af0106c20e",
+    "command": "/usr/local/bin/agentready assess /repo --output-dir /reports",
+    "working_directory": "/tmp"
+  },
+  "repository": {
+    "path": "/repo",
+    "name": "repo",
+    "url": "https://github.com/konflux-ci/segment-bridge.git",
+    "branch": "main",
+    "commit_hash": "59bfbe5396b4e4d769d61e70d29c544a5a53c31e",
+    "languages": {
+      "Markdown": 18,
+      "YAML": 68,
+      "JSON": 9,
+      "Go": 23,
+      "Shell": 13
+    },
+    "total_files": 168,
+    "total_lines": 19485
+  },
+  "timestamp": "2026-06-11T02:47:08.909633",
+  "overall_score": 84.0,
+  "certification_level": "Gold",
+  "attributes_assessed": 25,
+  "attributes_skipped": 8,
+  "attributes_total": 33,
+  "findings": [
+    {
+      "attribute": {
+        "id": "test_execution",
+        "name": "Test Execution & Coverage",
+        "category": "Testing & CI/CD",
+        "tier": 1,
+        "description": "Single-command test runner with adequate coverage configuration",
+        "criteria": "Runnable tests with coverage config",
+        "default_weight": 0.1
+      },
+      "status": "pass",
+      "score": 100.0,
+      "measured_value": "configured",
+      "threshold": "runnable tests with coverage config",
+      "evidence": [
+        "Go test files found (*_test.go)",
+        "Go test command found in project files",
+        "Coverage configuration found",
+        "Race detector enabled (-race flag)"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "type_annotations",
+        "name": "Type Annotations",
+        "category": "Code Quality",
+        "tier": 1,
+        "description": "Type hints in function signatures",
+        "criteria": ">80% of functions have type annotations",
+        "default_weight": 0.08
+      },
+      "status": "pass",
+      "score": 95.0,
+      "measured_value": "95%",
+      "threshold": "\u226580%",
+      "evidence": [
+        "Go enforces types at compile time (statically typed)",
+        "Minimal interface{}/any usage: 6 occurrences"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "claude_md_file",
+        "name": "CLAUDE.md Configuration Files",
+        "category": "Context Window Optimization",
+        "tier": 1,
+        "description": "Project-specific configuration for AI coding agents",
+        "criteria": "CLAUDE.md or AGENTS.md file exists in repository root",
+        "default_weight": 0.07
+      },
+      "status": "pass",
+      "score": 100.0,
+      "measured_value": "present",
+      "threshold": "present",
+      "evidence": [
+        "CLAUDE.md found at /repo/CLAUDE.md"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "ci_quality_gates",
+        "name": "CI Quality Gates",
+        "category": "Testing & CI/CD",
+        "tier": 1,
+        "description": "CI runs lint, type-check, and tests on every PR",
+        "criteria": "CI gates with lint + type-check + tests",
+        "default_weight": 0.05
+      },
+      "status": "pass",
+      "score": 95,
+      "measured_value": "configured with quality gates",
+      "threshold": "CI with lint + test + type-check gates on PRs",
+      "evidence": [
+        "CI config found: .github/workflows/shell_coverage.yaml, .github/workflows/tekton-sample-input.yaml, .github/workflows/dependabot-auto-merge.yaml, .github/workflows/fullsend.yaml, .github/workflows/codeql.yaml, .github/workflows/gitlint.yaml, .github/workflows/e2e_tests.yaml, .github/workflows/pull_request_and_push.yaml, .github/workflows/unit_tests.yaml",
+        "Lint gate detected in CI",
+        "Test gate detected in CI",
+        "Type-check gate detected in CI",
+        "Descriptive job/step names found",
+        "Caching configured",
+        "Parallel job execution detected"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "single_file_verification",
+        "name": "Single-File Verification",
+        "category": "Verification & Feedback Loops",
+        "tier": 1,
+        "description": "Single-file lint and type-check commands available for fast feedback",
+        "criteria": "Documented single-file lint/type-check commands",
+        "default_weight": 0.05
+      },
+      "status": "fail",
+      "score": 50.0,
+      "measured_value": "partially documented",
+      "threshold": "single-file lint + type-check commands documented",
+      "evidence": [
+        "Single-file lint command found in CLAUDE.md"
+      ],
+      "remediation": {
+        "summary": "Document single-file lint and type-check commands in CLAUDE.md/AGENTS.md",
+        "steps": [
+          "Add single-file lint command to context file (e.g., 'ruff check path/to/file.py')",
+          "Add single-file type-check command (e.g., 'mypy path/to/file.py')",
+          "Ensure these commands work without a full build step",
+          "Target <5 seconds execution per file"
+        ],
+        "tools": [
+          "ruff",
+          "eslint",
+          "mypy",
+          "pyright",
+          "tsc"
+        ],
+        "commands": [
+          "# Python",
+          "ruff check path/to/file.py",
+          "mypy path/to/file.py",
+          "",
+          "# JavaScript/TypeScript",
+          "npx eslint path/to/file.ts",
+          "npx tsc --noEmit path/to/file.ts"
+        ],
+        "examples": [],
+        "citations": []
+      },
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "readme_structure",
+        "name": "README Structure",
+        "category": "Documentation Standards",
+        "tier": 1,
+        "description": "Well-structured README with key sections",
+        "criteria": "README.md with installation, usage, and development sections",
+        "default_weight": 0.05
+      },
+      "status": "pass",
+      "score": 100.0,
+      "measured_value": "3/3 sections",
+      "threshold": "3/3 sections",
+      "evidence": [
+        "Found 3/3 essential sections",
+        "Installation: \u2713",
+        "Usage: \u2713",
+        "Development: \u2713"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "standard_layout",
+        "name": "Standard Project Layouts",
+        "category": "Repository Structure",
+        "tier": 1,
+        "description": "Follows standard project structure for language",
+        "criteria": "Standard directories (src/ or project-named, tests/) present",
+        "default_weight": 0.05
+      },
+      "status": "fail",
+      "score": 50.0,
+      "measured_value": "50/100",
+      "threshold": "go.mod + structured source + tests",
+      "evidence": [
+        "go.mod: \u2713",
+        "cmd/ or main.go: \u2717",
+        "internal/ or pkg/: \u2717 (no package encapsulation)",
+        "*_test.go files: \u2713 (tests alongside source)"
+      ],
+      "remediation": {
+        "summary": "Organize Go project into standard layout",
+        "steps": [
+          "Create cmd/ directory for executable entry points",
+          "Create internal/ for private packages (compiler-enforced encapsulation)"
+        ],
+        "tools": [],
+        "commands": [
+          "mkdir -p cmd/yourapp",
+          "# Move main.go into cmd/yourapp/",
+          "mkdir -p internal/"
+        ],
+        "examples": [
+          "# Standard Go project layout\nproject/\n\u251c\u2500\u2500 cmd/\n\u2502   \u2514\u2500\u2500 myapp/\n\u2502       \u2514\u2500\u2500 main.go\n\u251c\u2500\u2500 internal/\n\u2502   \u251c\u2500\u2500 handler/\n\u2502   \u2502   \u251c\u2500\u2500 handler.go\n\u2502   \u2502   \u2514\u2500\u2500 handler_test.go\n\u2502   \u2514\u2500\u2500 service/\n\u2502       \u251c\u2500\u2500 service.go\n\u2502       \u2514\u2500\u2500 service_test.go\n\u251c\u2500\u2500 pkg/              (optional, for public library code)\n\u2502   \u2514\u2500\u2500 client/\n\u2502       \u2514\u2500\u2500 client.go\n\u251c\u2500\u2500 go.mod\n\u2514\u2500\u2500 go.sum\n"
+        ],
+        "citations": [
+          {
+            "source": "Go Documentation",
+            "title": "Organizing a Go module",
+            "url": "https://go.dev/doc/modules/layout",
+            "relevance": "Official Go project layout guidance"
+          }
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "lock_files",
+        "name": "Dependency Pinning for Reproducibility",
+        "category": "Dependency Management",
+        "tier": 1,
+        "description": "Dependencies pinned to exact versions in lock files",
+        "criteria": "Lock file with pinned versions, updated within 6 months",
+        "default_weight": 0.05
+      },
+      "status": "pass",
+      "score": 100.0,
+      "measured_value": "go.sum, requirements.txt",
+      "threshold": "lock file with pinned versions, < 6 months old",
+      "evidence": [
+        "Found lock file(s): go.sum"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "dependency_security",
+        "name": "Dependency Security & Vulnerability Scanning",
+        "category": "Security",
+        "tier": 1,
+        "description": "Security scanning tools configured for dependencies and code",
+        "criteria": "Dependabot, Renovate, CodeQL, or SAST tools configured; secret detection enabled",
+        "default_weight": 0.05
+      },
+      "status": "pass",
+      "score": 80,
+      "measured_value": "Security tools configured: Dependabot, CodeQL, gitleaks",
+      "threshold": "\u226560 points (Dependabot/Renovate + SAST or multiple scanners)",
+      "evidence": [
+        "\u2713 Dependabot configured for dependency updates",
+        "  6 package ecosystem(s) monitored",
+        "\u2713 CodeQL security scanning configured",
+        "\u2713 Secret detection configured (gitleaks)"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "dbt_project_config",
+        "name": "dbt Project Configuration",
+        "category": "dbt SQL Projects",
+        "tier": 1,
+        "description": "Valid dbt_project.yml with required fields",
+        "criteria": "dbt_project.yml exists with name, config-version, profile",
+        "default_weight": 0.1
+      },
+      "status": "not_applicable",
+      "score": null,
+      "measured_value": null,
+      "threshold": null,
+      "evidence": [
+        "Not applicable to ['Markdown', 'YAML', 'JSON', 'Go', 'Shell']"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "dbt_model_documentation",
+        "name": "dbt Model Documentation",
+        "category": "dbt SQL Projects",
+        "tier": 1,
+        "description": "Model descriptions in schema YAML files",
+        "criteria": "\u226580% of models have descriptions in schema.yml",
+        "default_weight": 0.1
+      },
+      "status": "not_applicable",
+      "score": null,
+      "measured_value": null,
+      "threshold": null,
+      "evidence": [
+        "Not applicable to ['Markdown', 'YAML', 'JSON', 'Go', 'Shell']"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "deterministic_enforcement",
+        "name": "Deterministic Enforcement (Hooks & Lint Rules)",
+        "category": "Testing & CI/CD",
+        "tier": 2,
+        "description": "Hooks and lint rules for deterministic quality enforcement",
+        "criteria": "Pre-commit or agent hooks configured",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 60.0,
+      "measured_value": "configured",
+      "threshold": "configured",
+      "evidence": [
+        ".pre-commit-config.yaml found (pre-commit hooks)"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "conventional_commits",
+        "name": "Conventional Commit Messages",
+        "category": "Git & Version Control",
+        "tier": 2,
+        "description": "Follows conventional commit format",
+        "criteria": "\u226580% of recent commits follow convention",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 100.0,
+      "measured_value": "configured",
+      "threshold": "configured",
+      "evidence": [
+        "Commit linting configured"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "gitignore_completeness",
+        "name": ".gitignore Completeness",
+        "category": "Git & Version Control",
+        "tier": 2,
+        "description": "Comprehensive .gitignore file with language-specific patterns",
+        "criteria": ".gitignore exists and includes language-specific patterns from GitHub templates",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 83.33333333333334,
+      "measured_value": "10/12 patterns",
+      "threshold": "\u226570% of language-specific patterns",
+      "evidence": [
+        ".gitignore found (716 bytes)",
+        "Pattern coverage: 10/12 (83%)",
+        "Missing 2 recommended patterns"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "one_command_setup",
+        "name": "One-Command Build/Setup",
+        "category": "Build & Development",
+        "tier": 2,
+        "description": "Single command to set up development environment from fresh clone",
+        "criteria": "Single command (make setup, npm install, etc.) documented prominently",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 100,
+      "measured_value": "make setup",
+      "threshold": "single command",
+      "evidence": [
+        "Setup command found in README: 'make setup'",
+        "Setup automation found: Makefile",
+        "Setup instructions in prominent location"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "file_size_limits",
+        "name": "File Size Limits",
+        "category": "Context Window Optimization",
+        "tier": 2,
+        "description": "Files are reasonably sized for AI context windows",
+        "criteria": "<5% of files >500 lines, no files >1000 lines",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 90,
+      "measured_value": "0 huge, 1 large out of 23",
+      "threshold": "<5% files >500 lines, 0 files >1000 lines",
+      "evidence": [
+        "Found 1 files 500-1000 lines (4.3% of 23 files)"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "separation_of_concerns",
+        "name": "Separation of Concerns",
+        "category": "Code Organization",
+        "tier": 2,
+        "description": "Code organized with single responsibility per module",
+        "criteria": "Feature-based organization, cohesive modules, low coupling",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 100.0,
+      "measured_value": "organization:100, cohesion:100, naming:100",
+      "threshold": "\u226575 overall",
+      "evidence": [
+        "Good directory organization (feature-based or flat)",
+        "File cohesion: 0/0 files >500 lines",
+        "No catch-all modules (utils.py, helpers.py) detected"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "concise_documentation",
+        "name": "Concise Documentation",
+        "category": "Documentation",
+        "tier": 2,
+        "description": "Documentation maximizes information density while minimizing token consumption",
+        "criteria": "README <500 lines with clear structure, bullet points over prose",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 77.0,
+      "measured_value": "131 lines, 9 headings, 8 bullets",
+      "threshold": "<500 lines, structured format",
+      "evidence": [
+        "README length: 131 lines (excellent)",
+        "Heading density: 6.9 per 100 lines (target: 3-5)",
+        "1 paragraphs exceed 10 lines (walls of text)"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "inline_documentation",
+        "name": "Inline Documentation",
+        "category": "Documentation",
+        "tier": 2,
+        "description": "Function, class, and module-level documentation using language-specific conventions",
+        "criteria": "\u226580% of public functions/classes have docstrings",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 96.49122807017542,
+      "measured_value": "77.2%",
+      "threshold": "\u226580%",
+      "evidence": [
+        "Documented exports: 44/57",
+        "Godoc coverage: 77.2%"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "pattern_references",
+        "name": "Pattern References for Common Changes",
+        "category": "Agent Patterns & Knowledge",
+        "tier": 2,
+        "description": "Reference implementations and skills for common change types",
+        "criteria": "3-5 pattern references or skills documented",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 60.0,
+      "measured_value": "1 reference source(s)",
+      "threshold": "pattern references or skills documented",
+      "evidence": [
+        ".claude/skills/ directory with 5 SKILL.md file(s)"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "dbt_data_tests",
+        "name": "dbt Data Tests",
+        "category": "dbt SQL Projects",
+        "tier": 2,
+        "description": "Generic tests on model primary keys",
+        "criteria": "\u226580% of models have unique/not_null tests on primary key",
+        "default_weight": 0.03
+      },
+      "status": "not_applicable",
+      "score": null,
+      "measured_value": null,
+      "threshold": null,
+      "evidence": [
+        "Not applicable to ['Markdown', 'YAML', 'JSON', 'Go', 'Shell']"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "dbt_project_structure",
+        "name": "dbt Project Structure",
+        "category": "dbt SQL Projects",
+        "tier": 2,
+        "description": "Organized staging/marts directory structure",
+        "criteria": "models/ with staging/ and marts/ subdirectories",
+        "default_weight": 0.03
+      },
+      "status": "not_applicable",
+      "score": null,
+      "measured_value": null,
+      "threshold": null,
+      "evidence": [
+        "Not applicable to ['Markdown', 'YAML', 'JSON', 'Go', 'Shell']"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "design_intent",
+        "name": "Design Intent Documentation",
+        "category": "Agent Patterns & Knowledge",
+        "tier": 3,
+        "description": "Documented preconditions, invariants, and design rationale",
+        "criteria": "Design docs with architectural intent",
+        "default_weight": 0.02
+      },
+      "status": "pass",
+      "score": 50.0,
+      "measured_value": "documented",
+      "threshold": "design docs with preconditions/invariants",
+      "evidence": [
+        "docs/adr/ directory with 5 design document(s) containing intent language"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "repomix_config",
+        "name": "Repomix AI Context Generation",
+        "category": "AI-Assisted Development Tools",
+        "tier": 3,
+        "description": "Automated repository context generation for AI consumption",
+        "criteria": "Repomix configured with fresh output (< 7 days old)",
+        "default_weight": 0.02
+      },
+      "status": "fail",
+      "score": 50.0,
+      "measured_value": "configured but no output",
+      "threshold": "configured with fresh output",
+      "evidence": [
+        "Repomix configuration exists",
+        "No Repomix output files found"
+      ],
+      "remediation": {
+        "summary": "Generate Repomix output",
+        "steps": [
+          "Generate Repomix output: agentready repomix-generate",
+          "Commit output if needed for team access",
+          "Set up GitHub Action for automatic regeneration"
+        ],
+        "tools": [
+          "Repomix"
+        ],
+        "commands": [
+          "agentready repomix-generate"
+        ],
+        "examples": [],
+        "citations": []
+      },
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "cyclomatic_complexity",
+        "name": "Cyclomatic Complexity Thresholds",
+        "category": "Code Quality",
+        "tier": 3,
+        "description": "Cyclomatic complexity thresholds enforced",
+        "criteria": "Average complexity <10, no functions >15",
+        "default_weight": 0.02
+      },
+      "status": "skipped",
+      "score": null,
+      "measured_value": null,
+      "threshold": null,
+      "evidence": [
+        "Missing tool: gocyclo"
+      ],
+      "remediation": {
+        "summary": "Install with: go install github.com/fzipp/gocyclo/cmd/gocyclo@latest",
+        "steps": [
+          "Install with: go install github.com/fzipp/gocyclo/cmd/gocyclo@latest"
+        ],
+        "tools": [],
+        "commands": [],
+        "examples": [],
+        "citations": []
+      },
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "architecture_decisions",
+        "name": "Architecture Decision Records (ADRs)",
+        "category": "Documentation Standards",
+        "tier": 3,
+        "description": "Lightweight documents capturing architectural decisions",
+        "criteria": "ADR directory with documented decisions",
+        "default_weight": 0.03
+      },
+      "status": "pass",
+      "score": 97,
+      "measured_value": "5 ADRs",
+      "threshold": "\u22653 ADRs with template",
+      "evidence": [
+        "ADR directory found: docs/adr",
+        "5 architecture decision records",
+        "Consistent naming pattern detected",
+        "Sampled 3 ADRs: template compliance 17/20"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "structured_logging",
+        "name": "Structured Logging",
+        "category": "Code Quality",
+        "tier": 3,
+        "description": "Logging in structured format (JSON) with consistent fields",
+        "criteria": "Structured logging library configured (structlog, winston, zap)",
+        "default_weight": 0.02
+      },
+      "status": "fail",
+      "score": 0.0,
+      "measured_value": "not configured",
+      "threshold": "structured logging library",
+      "evidence": [
+        "No structured logging library found in go.mod",
+        "Go stdlib log package produces unstructured output"
+      ],
+      "remediation": {
+        "summary": "Add structured logging library for Go",
+        "steps": [
+          "Choose a structured logging library (slog for Go 1.21+, zap for high-performance)",
+          "Configure JSON output for production",
+          "Use consistent field naming across the codebase"
+        ],
+        "tools": [
+          "slog",
+          "zap",
+          "zerolog"
+        ],
+        "commands": [
+          "# Option A: Use stdlib slog (Go 1.21+)",
+          "# No installation needed \u2014 import \"log/slog\"",
+          "",
+          "# Option B: Use zap",
+          "go get go.uber.org/zap"
+        ],
+        "examples": [
+          "// Using Go stdlib slog (Go 1.21+)\nimport \"log/slog\"\n\nlogger := slog.New(slog.NewJSONHandler(os.Stdout, nil))\nlogger.Info(\"user_login\",\n    slog.String(\"user_id\", \"123\"),\n    slog.String(\"ip\", remoteAddr),\n)\n"
+        ],
+        "citations": [
+          {
+            "source": "Go Documentation",
+            "title": "log/slog package",
+            "url": "https://pkg.go.dev/log/slog",
+            "relevance": "Go stdlib structured logging (Go 1.21+)"
+          }
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "openapi_specs",
+        "name": "OpenAPI/Swagger Specifications",
+        "category": "API Documentation",
+        "tier": 3,
+        "description": "Machine-readable API documentation in OpenAPI format",
+        "criteria": "OpenAPI 3.x spec with complete endpoint documentation",
+        "default_weight": 0.03
+      },
+      "status": "not_applicable",
+      "score": null,
+      "measured_value": null,
+      "threshold": null,
+      "evidence": [
+        "Not applicable to ['Markdown', 'YAML', 'JSON', 'Go', 'Shell']"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "branch_protection",
+        "name": "Branch Protection Rules",
+        "category": "Git & Version Control",
+        "tier": 4,
+        "description": "Required status checks and review approvals before merging",
+        "criteria": "Branch protection enabled with status checks and required reviews",
+        "default_weight": 0.005
+      },
+      "status": "not_applicable",
+      "score": null,
+      "measured_value": null,
+      "threshold": null,
+      "evidence": [
+        "Requires GitHub API integration for branch protection checks. Future implementation will verify: required status checks, required reviews, force push prevention, and branch update requirements."
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "code_smells",
+        "name": "Code Smell Elimination",
+        "category": "Code Quality",
+        "tier": 4,
+        "description": "Linter configuration for detecting code smells and anti-patterns",
+        "criteria": "Language-specific linters configured (pylint, ESLint, RuboCop, etc.)",
+        "default_weight": 0.01
+      },
+      "status": "pass",
+      "score": 100.0,
+      "measured_value": "golangci-lint, actionlint, markdownlint",
+      "threshold": "\u226560% of applicable linters configured",
+      "evidence": [
+        "Linters configured: golangci-lint, actionlint, markdownlint",
+        "Coverage: 40/40 points (100%)"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "issue_pr_templates",
+        "name": "Issue & Pull Request Templates",
+        "category": "Repository Structure",
+        "tier": 4,
+        "description": "Standardized templates for issues and PRs",
+        "criteria": "PR template and issue templates in .github/",
+        "default_weight": 0.01
+      },
+      "status": "pass",
+      "score": 100,
+      "measured_value": "PR:True, Issues:3",
+      "threshold": "PR template + \u22652 issue templates",
+      "evidence": [
+        "PR template found",
+        "Issue templates found: 3 templates"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "container_setup",
+        "name": "Container/Virtualization Setup",
+        "category": "Build & Development",
+        "tier": 4,
+        "description": "Container configuration for consistent development environments",
+        "criteria": "Dockerfile/Containerfile, docker-compose.yml, .dockerignore/.containerignore, multi-stage builds",
+        "default_weight": 0.01
+      },
+      "status": "pass",
+      "score": 70,
+      "measured_value": "70 points",
+      "threshold": "\u226570 points (Dockerfile + compose + .dockerignore/.containerignore)",
+      "evidence": [
+        "\u2713 Dockerfile present",
+        "\u2713 Multi-stage build detected (optimized image size)",
+        "\u2713 .containerignore present (excludes unnecessary files)"
+      ],
+      "remediation": null,
+      "error_message": null
+    },
+    {
+      "attribute": {
+        "id": "progressive_disclosure",
+        "name": "Progressive Disclosure",
+        "category": "Agent Patterns & Knowledge",
+        "tier": 4,
+        "description": "Path-scoped rules and skills for large repos",
+        "criteria": "Component-level context files for repos >50K lines",
+        "default_weight": 0.01
+      },
+      "status": "not_applicable",
+      "score": null,
+      "measured_value": null,
+      "threshold": null,
+      "evidence": [
+        "Not applicable to ['Markdown', 'YAML', 'JSON', 'Go', 'Shell']"
+      ],
+      "remediation": null,
+      "error_message": null
+    }
+  ],
+  "config": {
+    "weights": {},
+    "excluded_attributes": [],
+    "language_overrides": {},
+    "output_dir": null,
+    "report_theme": "default",
+    "custom_theme": null
+  },
+  "duration_seconds": 0.2,
+  "discovered_skills": []
+}
