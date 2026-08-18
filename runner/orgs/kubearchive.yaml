@@ -1,0 +1,10 @@
+# Curated repos from the dashboard's curated Konflux repo list (owner:
+# kubearchive) — 2 of the 25 total. Not covered by org discovery, unlike
+# konflux-ci.yaml, since only these specific repos are tracked on the
+# dashboard.
+org: kubearchive
+default_config: orgs/konflux-ci-default-config.yaml
+
+repos:
+  - kubearchive
+  - tekton-results-importer

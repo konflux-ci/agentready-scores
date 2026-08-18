@@ -1,0 +1,8 @@
+# Shared ADR fallback config for the Konflux ecosystem — applied to any repo
+# (across konflux-ci, conforma, kubearchive) that has no
+# .agentready-config.yaml of its own. Referenced via `default_config:` from
+# runner/orgs/konflux-ci.yaml, runner/orgs/conforma.yaml, and
+# runner/orgs/kubearchive.yaml.
+adr_source:
+  repo: konflux-ci/architecture
+  path: ADR
