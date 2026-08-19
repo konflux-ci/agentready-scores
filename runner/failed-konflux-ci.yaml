@@ -1,0 +1,9 @@
+# Failed repos from 2026-08-19T07:57:19.145907+00:00
+org: konflux-ci
+repos:
+- clair-in-ci-db
+- konflux-clamav
+- konflux-test
+- konflux-test-tasks
+- pulp-tool
+- integration-service
