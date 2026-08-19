@@ -3,7 +3,7 @@
 # konflux-ci.yaml, since only these specific repos are tracked on the
 # dashboard.
 org: kubearchive
-default_config: orgs/konflux-ci-default-config.yaml
+default_config: configs/konflux-ci-default-config.yaml
 
 repos:
   - kubearchive

@@ -1,5 +1,5 @@
 org: konflux-ci
-default_config: orgs/konflux-ci-default-config.yaml
+default_config: configs/konflux-ci-default-config.yaml
 
 exclude:
   - .github
