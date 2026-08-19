@@ -67,7 +67,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def process_org(org, repos, exclusions, args, runner_lib):
+def process_org(org, repos, exclusions, default_config, args, runner_lib):
     """Run assessments for one org, commit results, write failures."""
     load_exclusions = runner_lib["load_exclusions"]
     discover_org_repos = runner_lib["discover_org_repos"]
@@ -95,6 +95,7 @@ def process_org(org, repos, exclusions, args, runner_lib):
         output_dir=args.output_dir,
         workers=args.workers,
         retries=args.retries,
+        default_config=default_config,
     )
 
     if succeeded:
@@ -139,22 +140,23 @@ def main():
             path = Path(path_str)
             print(f"\n--- Processing {path} ---")
             try:
-                org, repos, exclusions = load_repos_from_file(path)
+                org, repos, exclusions, default_config = load_repos_from_file(path)
             except SchemaError as exc:
                 print(f"ERROR: {exc}", file=sys.stderr)
                 sys.exit(2)
-            s, f = process_org(org, repos, exclusions, args, runner_lib)
+            s, f = process_org(org, repos, exclusions, default_config, args, runner_lib)
             total_succeeded += s
             total_failed += f
     else:
         org = args.org
         repos = []
         exclusions = set()
+        default_config = None
         # Apply exclusions from repos.yaml if present
         default_yaml = SCRIPT_DIR / "repos.yaml"
         if default_yaml.exists():
             exclusions = load_exclusions(default_yaml)
-        s, f = process_org(org, repos, exclusions, args, runner_lib)
+        s, f = process_org(org, repos, exclusions, default_config, args, runner_lib)
         total_succeeded += s
         total_failed += f
 

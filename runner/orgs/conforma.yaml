@@ -1,0 +1,12 @@
+# Curated repos from the dashboard's curated Konflux repo list (owner:
+# conforma) — 4 of the 25 total. Not covered by org discovery, unlike
+# konflux-ci.yaml, since only these specific repos are tracked on the
+# dashboard.
+org: conforma
+default_config: orgs/konflux-ci-default-config.yaml
+
+repos:
+  - crds
+  - cli
+  - config
+  - policy
