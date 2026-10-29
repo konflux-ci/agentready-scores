@@ -23,6 +23,9 @@ Examples:
 
   # Re-run failures
   python runner/assess.py --from-file runner/failed-konflux-ci.yaml
+
+  # Force re-assessment even for repos whose HEAD hasn't changed
+  python runner/assess.py --from-file runner/orgs/konflux-ci.yaml --force
 """
 import argparse
 import sys
@@ -64,6 +67,12 @@ def parse_args():
         "--output-dir", type=Path, default=REPO_ROOT / "submissions",
         help="Path to submissions directory (default: submissions/)"
     )
+    parser.add_argument(
+        "--force", action="store_true",
+        help="Re-assess every repo even if HEAD matches the prior run "
+             "(bypasses the commit-hash skip check). Meant for one-off manual "
+             "re-runs, e.g. flushing stale results after a runner logic change."
+    )
     return parser.parse_args()
 
 
@@ -96,6 +105,7 @@ def process_org(org, repos, exclusions, default_config, args, runner_lib):
         workers=args.workers,
         retries=args.retries,
         default_config=default_config,
+        force=args.force,
     )
 
     if succeeded:

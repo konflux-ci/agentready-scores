@@ -18,6 +18,11 @@ on:
         description: 'Retry attempts per failed repo'
         default: '1'
         required: false
+      force_reassess:
+        description: 'Force reassessment even if HEAD is unchanged since the last run'
+        type: boolean
+        default: false
+        required: false
 
 jobs:
   check-auth:
@@ -73,17 +78,20 @@ jobs:
       - name: Run assessments
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          FORCE_FLAG: ${{ inputs.force_reassess == true && '--force' || '' }}
         run: |
           if [ -n "${{ inputs.org }}" ]; then
             python3 runner/assess.py \
               --org "${{ inputs.org }}" \
               --workers "${{ inputs.workers }}" \
-              --retries "${{ inputs.retries }}"
+              --retries "${{ inputs.retries }}" \
+              $FORCE_FLAG
           else
             python3 runner/assess.py \
               --from-file ${{ inputs.from_file }} \
               --workers "${{ inputs.workers }}" \
-              --retries "${{ inputs.retries }}"
+              --retries "${{ inputs.retries }}" \
+              $FORCE_FLAG
           fi
 
       - name: Collect failure summary
