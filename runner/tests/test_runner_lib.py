@@ -310,7 +310,7 @@ class TestCommitHashPreCheck:
 
 class TestRunBatch:
     def test_returns_succeeded_and_failed(self, tmp_path):
-        def fake_assess(org, repo, output_dir, default_config=None, adr_clone_dir_default=None):
+        def fake_assess(org, repo, output_dir, default_config=None, adr_clone_dir_default=None, force=False):
             if repo == "bad-repo":
                 raise RuntimeError("clone failed")
             return str(output_dir / org / repo / "assessment.json")
@@ -330,7 +330,7 @@ class TestRunBatch:
     def test_retries_failed_repos(self, tmp_path):
         call_count = {"bad": 0}
 
-        def fake_assess(org, repo, output_dir, default_config=None, adr_clone_dir_default=None):
+        def fake_assess(org, repo, output_dir, default_config=None, adr_clone_dir_default=None, force=False):
             if repo == "flaky":
                 call_count["bad"] += 1
                 if call_count["bad"] < 2:
@@ -486,7 +486,7 @@ class TestRunBatchAdrSource:
         default_config = {"adr_source": {"repo": "konflux-ci/architecture", "path": "ADR"}}
         calls = []
 
-        def fake_assess(org, repo, output_dir, default_config=None, adr_clone_dir_default=None):
+        def fake_assess(org, repo, output_dir, default_config=None, adr_clone_dir_default=None, force=False):
             calls.append((repo, default_config, adr_clone_dir_default))
             return "ok"
 
