@@ -223,10 +223,16 @@ def assess_repo(
     output_dir: Path,
     default_config: Optional[dict] = None,
     adr_clone_dir_default: Optional[Path] = None,
+    force: bool = False,
 ) -> str:
     """
     Clone repo, run agentready container, extract JSON, write to submissions dir.
     Returns the path of the assessment JSON written, or raises on failure.
+
+    `force=True` skips the commit-hash pre-check below, re-running the full
+    assessment even if HEAD matches the prior run. Meant for a one-off manual
+    re-run (e.g. flushing stale results after a runner logic change) — never
+    wired into the scheduled workflow.
 
     Config resolution (repo config wins entirely — no merging with fallback):
       1. Look for `.agentready/config/.agentready-config.yaml` or
@@ -266,7 +272,7 @@ def assess_repo(
         ).decode().strip()
         existing_latest = repo_submissions_dir / "assessment-latest.json"
         prior_hash = _prior_commit_hash(existing_latest)
-        if prior_hash and head_hash == prior_hash:
+        if not force and prior_hash and head_hash == prior_hash:
             return "skipped:unchanged"
 
         uid = subprocess.check_output(["id", "-u"]).decode().strip()
@@ -333,18 +339,27 @@ def assess_repo(
             config_path_in_container = "/agentready-config.yaml"
 
         # Run agentready container
+        #
+        # Mount point basename must equal the real repo short name: agentready
+        # derives `repository.name` as `Path(<assess-target>).name` (see
+        # agentready/services/scanner.py::_build_repository_model) and uses
+        # that name to filter central-repo ADRs by `applies_to`. Mounting at a
+        # generic path like "/repo" makes every repo resolve to name="repo",
+        # so repo-specific applies_to entries never match — only "applies_to:
+        # *" wildcards do. Mounting at "/repo/<repo>" fixes that.
+        container_repo_path = f"/repo/{repo}"
         cmd = [
             "podman", "run", "--rm",
             "--user", f"{uid}:{gid}",
             "--userns=keep-id",
             "-e", "GIT_CONFIG_COUNT=1",
             "-e", "GIT_CONFIG_KEY_0=safe.directory",
-            "-e", "GIT_CONFIG_VALUE_0=/repo",
-            "-v", f"{clone_dir}:/repo:ro,z",
+            "-e", f"GIT_CONFIG_VALUE_0={container_repo_path}",
+            "-v", f"{clone_dir}:{container_repo_path}:ro,z",
             "-v", f"{output_tmp}:/reports:z",
             *extra_mounts,
             "ghcr.io/ambient-code/agentready:latest",
-            "assess", "/repo", "--output-dir", "/reports",
+            "assess", container_repo_path, "--output-dir", "/reports",
         ]
         if config_path_in_container:
             cmd += ["--config", config_path_in_container]
@@ -396,6 +411,7 @@ def run_batch(
     workers: int,
     retries: int,
     default_config: Optional[dict] = None,
+    force: bool = False,
 ) -> Tuple[List[str], List[str]]:
     """
     Run assessments concurrently. Returns (succeeded_repos, failed_repos).
@@ -404,6 +420,9 @@ def run_batch(
     If `default_config` has an `adr_source`, its repo is cloned once here and
     shared across all workers (repos with their own differing `adr_source`
     clone separately inside `assess_repo`). Cleaned up after the batch.
+
+    `force=True` is passed straight through to `assess_repo` for every repo
+    in this batch — see its docstring.
     """
     succeeded = []
     failed = list(repos)
@@ -435,7 +454,7 @@ def run_batch(
             with ThreadPoolExecutor(max_workers=workers) as pool:
                 futures = {
                     pool.submit(
-                        assess_repo, org, repo, output_dir, default_config, adr_clone_dir_default
+                        assess_repo, org, repo, output_dir, default_config, adr_clone_dir_default, force
                     ): repo
                     for repo in to_try
                 }
